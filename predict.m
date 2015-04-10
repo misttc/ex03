@@ -22,12 +22,14 @@ p = zeros(size(X, 1), 1);
 %
 
 X = [ones(m, 1), X];
-A2 = X * Theta1';						% results a 25X1 vector (A2) 5000x25
-A3 =[ones(m, 1), A2];
-H = A3 * Theta2';						% results a 10X1 vector (H)
+Z = X * Theta1';						% Z dimension is m(5000)x25
+H1 = 1 ./ (1 + exp(-Z));	
+A2 =[ones(m, 1), H1];					% A2 dimension is mx(25+1)
+A3 = A2 * Theta2';
+H = 1 ./ (1 + exp(-A3));			    % H dimension is m*num_labels
 for i = 1:m
 	[x, ix] = max(H(i,:));
-	p(i) = ix;
+	p(i) = ix;							% p dimension is mx1
 end
 % =========================================================================
 
